@@ -5,28 +5,20 @@
       "id": 1
     },
     {
-      "content": "another note",
+      "content": "1",
       "id": 2
     },
     {
-      "content": "new note",
+      "content": "2",
       "id": 3
     },
     {
-      "content": "new note",
+      "content": "3",
       "id": 4
     },
     {
-      "content": "new note",
+      "content": "4",
       "id": 5
-    },
-    {
-      "content": "a",
-      "id": 6
-    },
-    {
-      "content": "a",
-      "id": 7
     }
   ],
   "persons": [
@@ -39,6 +31,16 @@
       "name": "new",
       "number": "123445",
       "id": 2
+    },
+    {
+      "name": "12",
+      "number": "23",
+      "id": 3
+    },
+    {
+      "name": "12",
+      "number": "23",
+      "id": 4
     }
   ]
 }

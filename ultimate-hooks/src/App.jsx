@@ -22,9 +22,8 @@ const useResource = (baseUrl) => {
     axios.get(baseUrl).then((res) => setResources(res.data));
   }, [baseUrl])
   
-
   const create = (resource) => {
-    axios.post(baseUrl, resource);
+    axios.post(baseUrl, resource).then((res) => setResources([...resources, res.data]));
   }
 
   const service = {
@@ -47,12 +46,14 @@ const App = () => {
   const handleNoteSubmit = (event) => {
     event.preventDefault()
     noteService.create({ content: content.value })
+    content.onChange({ target: { value: '' } });
   }
  
   const handlePersonSubmit = (event) => {
     event.preventDefault()
     personService.create({ name: name.value, number: number.value})
-
+    name.onChange({ target: { value: '' } });
+    number.onChange({ target: { value: '' } });
   }
 
   return (
