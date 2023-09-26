@@ -18,10 +18,13 @@ const useField = (type) => {
 const useResource = (baseUrl) => {
   const [resources, setResources] = useState([])
 
-  // ...
+  useEffect(() => {
+    axios.get(baseUrl).then((res) => setResources(res.data));
+  }, [baseUrl])
+  
 
   const create = (resource) => {
-    // ...
+    axios.post(baseUrl, resource);
   }
 
   const service = {
@@ -49,6 +52,7 @@ const App = () => {
   const handlePersonSubmit = (event) => {
     event.preventDefault()
     personService.create({ name: name.value, number: number.value})
+
   }
 
   return (
