@@ -1,15 +1,13 @@
-import React, { useState } from 'react';
+import React, { useState } from "react";
 
-const Blog = ({
-  blog, increaseLikes, removeBlog, allowRemove,
-}) => {
+const Blog = ({ blog, increaseLikes, removeBlog, allowRemove }) => {
   const [view, setView] = useState(false);
   const [likes, setLikes] = useState(blog.likes);
 
   const blogStyle = {
     padding: 5,
     paddingLeft: 2,
-    border: 'solid',
+    border: "solid",
     borderWidth: 1,
     marginBottom: 5,
   };
@@ -40,15 +38,27 @@ const Blog = ({
     <div>
       <div className="blog" style={blogStyle}>
         <div>
-          {blog.title} <button type="button" onClick={toggleInfo}>{view ? 'close' : 'view'}</button>
+          {blog.title}{" "}
+          <button type="button" onClick={toggleInfo}>
+            {view ? "close" : "view"}
+          </button>
         </div>
         <div>By {blog.author}</div>
-        <div className="moreInfo" style={{ display: view ? '' : 'none' }}>
+        <div className="moreInfo" style={{ display: view ? "" : "none" }}>
           <a href={blog.url}>{blog.url}</a>
           <div>
-            Likes: {likes} <button type="button" onClick={handleLike}>like</button>
+            Likes: {likes}{" "}
+            <button type="button" onClick={handleLike}>
+              like
+            </button>
           </div>
-          <button type="button" onClick={handleRemove} style={{ display: allowRemove ? '' : 'none' }}>remove</button>
+          <button
+            type="button"
+            onClick={handleRemove}
+            style={{ display: allowRemove ? "" : "none" }}
+          >
+            remove
+          </button>
         </div>
       </div>
     </div>

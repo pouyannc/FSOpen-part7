@@ -1,6 +1,6 @@
-import axios from 'axios';
+import axios from "axios";
 
-const baseUrl = 'http://localhost:3003/api/blogs';
+const baseUrl = "http://localhost:3003/api/blogs";
 
 let token;
 
@@ -14,7 +14,9 @@ const getAll = async () => {
 };
 
 const create = async (req) => {
-  const res = await axios.post(baseUrl, req, { headers: { Authorization: token } });
+  const res = await axios.post(baseUrl, req, {
+    headers: { Authorization: token },
+  });
   return res.data;
 };
 
@@ -27,5 +29,9 @@ const remove = async (id) => {
 };
 
 export default {
-  getAll, create, update, remove, setToken,
+  getAll,
+  create,
+  update,
+  remove,
+  setToken,
 };

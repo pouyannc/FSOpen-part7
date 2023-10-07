@@ -1,4 +1,4 @@
-import React from 'react';
+import React from "react";
 
 const Alert = ({ text }) => <h4 className="alert">{text}</h4>;
 
