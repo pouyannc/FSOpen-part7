@@ -8,11 +8,13 @@ import Alert from "./components/Alert";
 import Togglable from "./components/Togglable";
 import { notify } from "./reducers/notifReducer";
 import { useDispatch, useSelector } from "react-redux";
+import { append, setBlogs, remove } from "./reducers/blogsReducer";
 
 const App = () => {
   const notif = useSelector(({ notif }) => notif);
+  const blogs = useSelector(({ blogs }) => blogs);
 
-  const [blogs, setBlogs] = useState([]);
+  //const [blogs, setBlogs] = useState([]);
   const [user, setUser] = useState(null);
 
   const createPostRef = useRef();
@@ -39,7 +41,7 @@ const App = () => {
     createPostRef.current.toggleVisibility();
     const res = await blogService.create(req);
 
-    setBlogs(blogs.concat(res));
+    dispatch(append(res));
     dispatch(notify(`New entry created: ${res.title}`, 4));
   };
 
@@ -50,15 +52,14 @@ const App = () => {
 
   const removeBlog = async (id) => {
     await blogService.remove(id);
-    const updatedBlogs = blogs.filter((b) => b.id !== id);
-    setBlogs(updatedBlogs);
+    dispatch(remove(id));
   };
 
   useEffect(() => {
     const fetchBlogs = async () => {
       const allBlogs = await blogService.getAll();
       const sortedByLikes = allBlogs.sort((a, b) => b.likes - a.likes);
-      setBlogs(sortedByLikes);
+      dispatch(setBlogs(sortedByLikes));
     };
 
     fetchBlogs();
