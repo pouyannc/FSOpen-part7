@@ -1,16 +1,16 @@
-import React, { useState } from "react";
+import React from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { changePassword, changeUsername, login } from "../reducers/userReducer";
 
-const Login = ({ login }) => {
-  const [username, setUsername] = useState("");
-  const [password, setPassword] = useState("");
+
+const Login = () => {
+  const dispatch = useDispatch();
+  const userInfo = useSelector(({ user }) => user);
 
   const handleSubmit = (e) => {
     e.preventDefault();
 
-    login({ username, password });
-
-    setUsername("");
-    setPassword("");
+    dispatch(login(userInfo));
   };
 
   return (
@@ -23,10 +23,9 @@ const Login = ({ login }) => {
           <input
             id="username"
             type="text"
-            value={username}
             name="username"
             onChange={(e) => {
-              setUsername(e.target.value);
+              dispatch(changeUsername(e.target.value));
             }}
           />
         </div>
@@ -35,10 +34,9 @@ const Login = ({ login }) => {
           <input
             id="password"
             type="password"
-            value={password}
             name="password"
             onChange={(e) => {
-              setPassword(e.target.value);
+              dispatch(changePassword(e.target.value));
             }}
           />
         </div>

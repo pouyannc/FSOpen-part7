@@ -1,4 +1,6 @@
 import { createSlice } from "@reduxjs/toolkit";
+import blogService from "../services/blogs";
+import { notify } from "./notifReducer";
 
 const blogsSlice = createSlice({
   name: "blogs",
@@ -17,5 +19,12 @@ const blogsSlice = createSlice({
 });
 
 export const { setBlogs, append, remove } = blogsSlice.actions;
+
+export const createNew = (req) => async (dispatch) => {
+  const res = await blogService.create(req);
+
+  dispatch(append(res));
+  dispatch(notify(`New entry created: ${res.title}`, 4));
+}
 
 export default blogsSlice.reducer;

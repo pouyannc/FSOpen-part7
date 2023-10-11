@@ -1,16 +1,20 @@
 import React, { useState } from "react";
+import { createNew } from "../reducers/blogsReducer";
+import { useDispatch } from "react-redux";
 
-const CreatePost = ({ createNew }) => {
+const CreatePost = ({ createPostRef }) => {
   const [title, setTitle] = useState("");
   const [author, setAuthor] = useState("");
   const [url, setUrl] = useState("");
 
+  const dispatch = useDispatch();
+
   const handleCreate = async (e) => {
     e.preventDefault();
-
     const req = { title, author, url };
 
-    createNew(req);
+    createPostRef.current.toggleVisibility();
+    dispatch(createNew(req));
   };
 
   return (

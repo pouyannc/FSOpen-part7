@@ -2,47 +2,26 @@ import React, { useState, useEffect, useRef } from "react";
 import Blog from "./components/Blog";
 import blogService from "./services/blogs";
 import Login from "./components/Login";
-import loginService from "./services/login";
 import CreatePost from "./components/CreatePost";
 import Alert from "./components/Alert";
 import Togglable from "./components/Togglable";
-import { notify } from "./reducers/notifReducer";
 import { useDispatch, useSelector } from "react-redux";
-import { append, setBlogs, remove } from "./reducers/blogsReducer";
+import { setBlogs, remove } from "./reducers/blogsReducer";
+import { logout } from "./reducers/userReducer";
 
 const App = () => {
   const notif = useSelector(({ notif }) => notif);
   const blogs = useSelector(({ blogs }) => blogs);
 
-  //const [blogs, setBlogs] = useState([]);
   const [user, setUser] = useState(null);
 
   const createPostRef = useRef();
 
   const dispatch = useDispatch();
 
-  const login = async (req) => {
-    try {
-      const loginRes = await loginService(req);
-      blogService.setToken(loginRes.token);
-      setUser(loginRes);
-      window.localStorage.setItem("loggedUser", JSON.stringify(loginRes));
-    } catch (error) {
-      dispatch(notify("wrong username or password", 4));
-    }
-  };
-
   const handleLogout = () => {
     window.localStorage.clear();
-    setUser(null);
-  };
-
-  const createNew = async (req) => {
-    createPostRef.current.toggleVisibility();
-    const res = await blogService.create(req);
-
-    dispatch(append(res));
-    dispatch(notify(`New entry created: ${res.title}`, 4));
+    dispatch(logout());
   };
 
   const increaseLikes = async (req, blogId) => {
@@ -76,7 +55,7 @@ const App = () => {
       {notif.show && <Alert text={notif.message} />}
 
       {!user ? (
-        <Login login={login} />
+        <Login />
       ) : (
         <div>
           <div>
@@ -87,7 +66,7 @@ const App = () => {
             </button>
           </div>
           <Togglable label="Create new" ref={createPostRef}>
-            <CreatePost createNew={createNew} />
+            <CreatePost createPostRef={createPostRef} />
           </Togglable>
           <h2>Blogs</h2>
           {blogs.map((b) => (
