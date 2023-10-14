@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useEffect, useRef } from "react";
 import Blog from "./components/Blog";
 import blogService from "./services/blogs";
 import Login from "./components/Login";
@@ -7,13 +7,12 @@ import Alert from "./components/Alert";
 import Togglable from "./components/Togglable";
 import { useDispatch, useSelector } from "react-redux";
 import { setBlogs, remove } from "./reducers/blogsReducer";
-import { logout } from "./reducers/userReducer";
+import { loginUser, logout } from "./reducers/userReducer";
 
 const App = () => {
   const notif = useSelector(({ notif }) => notif);
   const blogs = useSelector(({ blogs }) => blogs);
-
-  const [user, setUser] = useState(null);
+  const user = useSelector(({user}) => user.user);
 
   const createPostRef = useRef();
 
@@ -45,7 +44,7 @@ const App = () => {
 
     const loggedUser = JSON.parse(window.localStorage.getItem("loggedUser"));
     if (loggedUser) {
-      setUser(loggedUser);
+      dispatch(loginUser(loggedUser));
       blogService.setToken(loggedUser.token);
     }
   }, []);
