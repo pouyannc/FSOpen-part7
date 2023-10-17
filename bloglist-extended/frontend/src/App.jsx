@@ -8,6 +8,9 @@ import Togglable from "./components/Togglable";
 import { useDispatch, useSelector } from "react-redux";
 import { setBlogs, remove } from "./reducers/blogsReducer";
 import { loginUser, logout } from "./reducers/userReducer";
+import { Route, BrowserRouter as Router, Routes,  } from "react-router-dom";
+import Users from "./views/Users";
+import User from "./views/User";
 
 const App = () => {
   const notif = useSelector(({ notif }) => notif);
@@ -56,7 +59,7 @@ const App = () => {
       {!user ? (
         <Login />
       ) : (
-        <div>
+        <Router>
           <div>
             {"logged in as "}
             {`${user.username} `}
@@ -77,7 +80,11 @@ const App = () => {
               allowRemove={user.username === b.user.username}
             />
           ))}
-        </div>
+          <Routes>
+            <Route path="/users" element={<Users />} />
+            <Route path="/users/:id" element={<User />} />
+          </Routes>
+        </Router>
       )}
     </>
   );

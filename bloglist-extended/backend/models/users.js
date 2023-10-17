@@ -1,25 +1,25 @@
-const mongoose = require('mongoose');
+const mongoose = require("mongoose");
 
 const userSchema = new mongoose.Schema({
   name: String,
   username: {
     type: String,
-    required: [true, 'username is required'],
-    minLength: [3, 'username is too short'],
+    required: [true, "username is required"],
+    minLength: [3, "username is too short"],
   },
   passwordHash: {
     type: String,
-    required: [true, 'password is required'],
+    required: [true, "password is required"],
   },
   blogs: [
     {
       type: mongoose.Schema.Types.ObjectId,
-      ref: 'Blog',
+      ref: "Blog",
     },
   ],
 });
 
-userSchema.set('toJSON', {
+userSchema.set("toJSON", {
   transform: (doc, ret) => {
     const id = ret._id.toString();
     delete ret._id;
@@ -29,5 +29,5 @@ userSchema.set('toJSON', {
   },
 });
 
-const User = mongoose.model('User', userSchema);
+const User = mongoose.model("User", userSchema);
 module.exports = User;
