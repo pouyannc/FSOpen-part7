@@ -8,7 +8,7 @@ import Togglable from "./components/Togglable";
 import { useDispatch, useSelector } from "react-redux";
 import { setBlogs, remove } from "./reducers/blogsReducer";
 import { loginUser, logout } from "./reducers/userReducer";
-import { Route, BrowserRouter as Router, Routes,  } from "react-router-dom";
+import { Link, Route, Routes, useMatch,  } from "react-router-dom";
 import Users from "./views/Users";
 import User from "./views/User";
 
@@ -17,10 +17,23 @@ const App = () => {
   const blogs = useSelector(({ blogs }) => blogs);
   const user = useSelector(({user}) => user.user);
 
+  const blogStyle = {
+    padding: 5,
+    paddingLeft: 2,
+    border: "solid",
+    borderWidth: 1,
+    marginBottom: 5,
+  };
+
   const createPostRef = useRef();
 
   const dispatch = useDispatch();
 
+  const match = useMatch('blogs/:id');
+  const blog = match
+    ? blogs.find((b) => b.id === match.params.id)
+    : null;
+  
   const handleLogout = () => {
     window.localStorage.clear();
     dispatch(logout());
@@ -59,7 +72,7 @@ const App = () => {
       {!user ? (
         <Login />
       ) : (
-        <Router>
+        <div>
           <div>
             {"logged in as "}
             {`${user.username} `}
@@ -72,19 +85,19 @@ const App = () => {
           </Togglable>
           <h2>Blogs</h2>
           {blogs.map((b) => (
-            <Blog
-              key={b.id}
-              blog={b}
-              increaseLikes={increaseLikes}
-              removeBlog={removeBlog}
-              allowRemove={user.username === b.user.username}
-            />
+            <Link key={b.id} to={`/blogs/${b.id}`} style={blogStyle}>{b.title}</Link>
           ))}
           <Routes>
             <Route path="/users" element={<Users />} />
             <Route path="/users/:id" element={<User />} />
+            <Route path="/blogs/:id" element={<Blog
+              blog={blog}
+              increaseLikes={increaseLikes}
+              removeBlog={removeBlog}
+              username={user.username}
+            />} />
           </Routes>
-        </Router>
+        </div>
       )}
     </>
   );

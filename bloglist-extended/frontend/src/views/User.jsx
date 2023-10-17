@@ -8,6 +8,10 @@ const User = () => {
 
   const user = users.find((u) => u.id === id);
 
+  if(!user) {
+    return null;
+  }
+
   return (
     <div>
       <h2>{user.username}</h2>
