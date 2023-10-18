@@ -1,62 +1,37 @@
-import React, { useEffect, useRef } from "react";
+import React, { useEffect } from "react";
 import Blog from "./components/Blog";
 import blogService from "./services/blogs";
 import Login from "./components/Login";
-import CreatePost from "./components/CreatePost";
 import Alert from "./components/Alert";
-import Togglable from "./components/Togglable";
 import { useDispatch, useSelector } from "react-redux";
-import { setBlogs, remove } from "./reducers/blogsReducer";
+import { initBlogs } from "./reducers/blogsReducer";
 import { loginUser, logout } from "./reducers/userReducer";
-import { Link, Route, Routes, useMatch,  } from "react-router-dom";
+import { Link, Route, Routes, useMatch } from "react-router-dom";
 import Users from "./views/Users";
 import User from "./views/User";
+import Blogs from "./views/Blogs";
+import { initUserData } from "./reducers/userDataReducer";
 
 const App = () => {
   const notif = useSelector(({ notif }) => notif);
-  const blogs = useSelector(({ blogs }) => blogs);
-  const user = useSelector(({user}) => user.user);
-
-  const blogStyle = {
-    padding: 5,
-    paddingLeft: 2,
-    border: "solid",
-    borderWidth: 1,
-    marginBottom: 5,
-  };
-
-  const createPostRef = useRef();
+  const blogs = useSelector(({ blogs }) =>
+    [...blogs].sort((a, b) => b.likes - a.likes),
+  );
+  const user = useSelector(({ user }) => user.user);
 
   const dispatch = useDispatch();
 
-  const match = useMatch('blogs/:id');
-  const blog = match
-    ? blogs.find((b) => b.id === match.params.id)
-    : null;
-  
+  const match = useMatch("blogs/:id");
+  const blog = match ? blogs.find((b) => b.id === match.params.id) : null;
+
   const handleLogout = () => {
     window.localStorage.clear();
     dispatch(logout());
   };
 
-  const increaseLikes = async (req, blogId) => {
-    const resBlog = await blogService.update(req, blogId);
-    return resBlog;
-  };
-
-  const removeBlog = async (id) => {
-    await blogService.remove(id);
-    dispatch(remove(id));
-  };
-
   useEffect(() => {
-    const fetchBlogs = async () => {
-      const allBlogs = await blogService.getAll();
-      const sortedByLikes = allBlogs.sort((a, b) => b.likes - a.likes);
-      dispatch(setBlogs(sortedByLikes));
-    };
-
-    fetchBlogs();
+    dispatch(initBlogs());
+    dispatch(initUserData());
 
     const loggedUser = JSON.parse(window.localStorage.getItem("loggedUser"));
     if (loggedUser) {
@@ -74,28 +49,22 @@ const App = () => {
       ) : (
         <div>
           <div>
+            <Link to="/">blogs </Link>
+            <Link to="/users">users </Link>
             {"logged in as "}
             {`${user.username} `}
             <button type="button" onClick={handleLogout}>
               logout
             </button>
           </div>
-          <Togglable label="Create new" ref={createPostRef}>
-            <CreatePost createPostRef={createPostRef} />
-          </Togglable>
-          <h2>Blogs</h2>
-          {blogs.map((b) => (
-            <Link key={b.id} to={`/blogs/${b.id}`} style={blogStyle}>{b.title}</Link>
-          ))}
           <Routes>
+            <Route path="/" element={<Blogs blogs={blogs} />} />
+            <Route
+              path="/blogs/:id"
+              element={<Blog blog={blog} username={user.username} />}
+            />
             <Route path="/users" element={<Users />} />
             <Route path="/users/:id" element={<User />} />
-            <Route path="/blogs/:id" element={<Blog
-              blog={blog}
-              increaseLikes={increaseLikes}
-              removeBlog={removeBlog}
-              username={user.username}
-            />} />
           </Routes>
         </div>
       )}

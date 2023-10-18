@@ -1,25 +1,26 @@
-import React, { useState } from "react";
+import React from "react";
+import { useDispatch } from "react-redux";
+import { likeBlog, removeBlog } from "../reducers/blogsReducer";
+import { useNavigate } from "react-router-dom";
 
-const Blog = ({ blog, increaseLikes, removeBlog, username }) => {
-  const [likes, setLikes] = useState(blog.likes);
+const Blog = ({ blog, username }) => {
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+
+  if (!blog) {
+    return null;
+  }
 
   const allowRemove = blog.user.username === username;
 
   const handleLike = () => {
-    const req = {
-      title: blog.title,
-      author: blog.author,
-      url: blog.url,
-      likes: likes + 1,
-      user: blog.user.id,
-    };
-    increaseLikes(req, blog.id);
-    setLikes(likes + 1);
+    dispatch(likeBlog(blog));
   };
 
   const handleRemove = () => {
     if (confirm(`Delete blog: ${blog.title}?`)) {
-      removeBlog(blog.id);
+      dispatch(removeBlog(blog.id));
+      navigate('/');
     }
   };
 
@@ -29,7 +30,7 @@ const Blog = ({ blog, increaseLikes, removeBlog, username }) => {
       <h3>By: {blog.author}</h3>
       <div>{blog.url}</div>
       <div>
-        {likes} likes
+        {blog.likes} likes
         <button type="button" onClick={handleLike}>
           like
         </button>
