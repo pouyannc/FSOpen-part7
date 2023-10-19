@@ -1,12 +1,12 @@
 import React, { useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { Link, Route, Routes, useMatch } from "react-router-dom";
 import Blog from "./components/Blog";
 import blogService from "./services/blogs";
 import Login from "./components/Login";
 import Alert from "./components/Alert";
-import { useDispatch, useSelector } from "react-redux";
 import { initBlogs } from "./reducers/blogsReducer";
 import { loginUser, logout } from "./reducers/userReducer";
-import { Link, Route, Routes, useMatch } from "react-router-dom";
 import Users from "./views/Users";
 import User from "./views/User";
 import Blogs from "./views/Blogs";
@@ -18,6 +18,7 @@ const App = () => {
     [...blogs].sort((a, b) => b.likes - a.likes),
   );
   const user = useSelector(({ user }) => user.user);
+  const users = useSelector(({ userData }) => userData);
 
   const dispatch = useDispatch();
 
@@ -63,7 +64,7 @@ const App = () => {
               path="/blogs/:id"
               element={<Blog blog={blog} username={user.username} />}
             />
-            <Route path="/users" element={<Users />} />
+            <Route path="/users" element={<Users users={users} />} />
             <Route path="/users/:id" element={<User />} />
           </Routes>
         </div>

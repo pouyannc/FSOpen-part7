@@ -28,10 +28,16 @@ const remove = async (id) => {
   await axios.delete(`${baseUrl}/${id}`, { headers: { Authorization: token } });
 };
 
+const addComment = async (req, blogId) => {
+  const res = await axios.post(`${baseUrl}/${blogId}/comments`, req)
+  return res.data;
+}
+
 export default {
   getAll,
   create,
   update,
   remove,
   setToken,
+  addComment
 };

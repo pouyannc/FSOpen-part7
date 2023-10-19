@@ -1,5 +1,6 @@
 const blogsRouter = require("express").Router();
 const Blog = require("../models/blogs");
+const { findById } = require("../models/users");
 const { userExtractor } = require("../utils/middleware");
 
 blogsRouter.get("/", async (request, response) => {
@@ -37,7 +38,7 @@ blogsRouter.delete("/:id", userExtractor, async (request, response) => {
 
   await Blog.findByIdAndRemove(blogId);
 
-  response.status(204).end();
+  return response.status(204).end();
 });
 
 blogsRouter.put("/:id", async (request, response) => {
@@ -49,5 +50,17 @@ blogsRouter.put("/:id", async (request, response) => {
 
   response.json(updatedBlog);
 });
+
+blogsRouter.post("/:id/comments", async (request, response) => {
+  const blogId = request.params.id;
+
+  const blog = await Blog.findById(blogId);
+
+  blog.comments = blog.comments.concat(request.body.content);
+
+  const res = await blog.save();
+
+  return response.status(201).json(res);
+})
 
 module.exports = blogsRouter;

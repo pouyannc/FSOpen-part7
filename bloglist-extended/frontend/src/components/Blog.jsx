@@ -1,7 +1,9 @@
 import React from "react";
 import { useDispatch } from "react-redux";
-import { likeBlog, removeBlog } from "../reducers/blogsReducer";
 import { useNavigate } from "react-router-dom";
+import { likeBlog, removeBlog } from "../reducers/blogsReducer";
+import Comments from "./Comments";
+
 
 const Blog = ({ blog, username }) => {
   const dispatch = useDispatch();
@@ -20,7 +22,7 @@ const Blog = ({ blog, username }) => {
   const handleRemove = () => {
     if (confirm(`Delete blog: ${blog.title}?`)) {
       dispatch(removeBlog(blog.id));
-      navigate('/');
+      navigate("/");
     }
   };
 
@@ -43,6 +45,7 @@ const Blog = ({ blog, username }) => {
       >
         remove
       </button>
+      <Comments blog={blog} />
     </div>
   );
 };

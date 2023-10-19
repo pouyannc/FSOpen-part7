@@ -1,7 +1,6 @@
 import { createSlice } from "@reduxjs/toolkit";
 import blogService from "../services/blogs";
 import { notify } from "./notifReducer";
-import { useNavigate } from "react-router-dom";
 
 const blogsSlice = createSlice({
   name: "blogs",
@@ -19,11 +18,15 @@ const blogsSlice = createSlice({
     increaseLikes(state, action) {
       const id = action.payload;
       return state.map((blog) => blog.id === id ? {...blog, likes: blog.likes + 1} : blog);
+    },
+    addComment(state, action) {
+      const { id } = action.payload;
+      return state.map((blog) => blog.id === id ? {...blog, comments: blog.comments} : blog);
     }
   },
 });
 
-export const { setBlogs, append, remove, increaseLikes } = blogsSlice.actions;
+export const { setBlogs, append, remove, increaseLikes, addComment } = blogsSlice.actions;
 
 export const initBlogs = () => async (dispatch) => {
   const res = await blogService.getAll();
@@ -52,6 +55,12 @@ export const likeBlog = (blog) => async (dispatch) => {
 export const removeBlog = (id) => async (dispatch) => {
   await blogService.remove(id);
   dispatch(remove(id));
+}
+
+export const postComment = (comment, blogId) => async (dispatch) => {
+  const req = { content: comment }
+  const res = await blogService.addComment(req, blogId);
+  dispatch(addComment(res));
 }
 
 export default blogsSlice.reducer;
