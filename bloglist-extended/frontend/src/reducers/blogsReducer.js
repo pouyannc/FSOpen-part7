@@ -21,7 +21,7 @@ const blogsSlice = createSlice({
     },
     addComment(state, action) {
       const { id } = action.payload;
-      return state.map((blog) => blog.id === id ? {...blog, comments: blog.comments} : blog);
+      return state.map((blog) => blog.id === id ? {...blog, comments: action.payload.comments} : blog);
     }
   },
 });
