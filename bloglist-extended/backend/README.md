@@ -1,6 +1,4 @@
-# Blog list
-
-Project for part 4 exercises of FullStack Open.
+# Blog list backend
 
 Backend REST API for adding, updating, retrieving, and deleting users and blogs in mongoDB using node, express, and mongoose.
 API testing using supertest and jest.

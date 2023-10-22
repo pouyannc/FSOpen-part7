@@ -19,10 +19,7 @@ const blogSchema = new mongoose.Schema({
     ref: "User",
   },
   comments: [
-    {
-      type: String,
-      minlength: 5,
-    }
+    String,
   ],
 });
 

@@ -1,0 +1,3 @@
+# Bloglist app extended
+
+Fullstack open part 7 remaining exercises. Extending the bloglist app frontend and backend from previous parts. Implented Redux state management with Redux Toolkit and Redux Thunk to replace old useState implementation. React Router for views and navigation to blogs and users pages, as well as dynamic views for indiviual blogs and users. Added a comments section. Comments stored in the Blog mongoose schema. Styling done using React Bootstrap.
