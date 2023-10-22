@@ -1,6 +1,7 @@
 import React, { useState } from "react";
-import { createNew } from "../reducers/blogsReducer";
 import { useDispatch } from "react-redux";
+import { Form, Button } from "react-bootstrap";
+import { createNew } from "../reducers/blogsReducer";
 
 const CreatePost = ({ createPostRef }) => {
   const [title, setTitle] = useState("");
@@ -15,16 +16,19 @@ const CreatePost = ({ createPostRef }) => {
 
     createPostRef.current.toggleVisibility();
     dispatch(createNew(req));
+    setTitle("");
+    setAuthor("");
+    setUrl("");
   };
 
   return (
     <>
       <h2>Create New</h2>
 
-      <form onSubmit={handleCreate}>
-        <div>
-          Title:{" "}
-          <input
+      <Form onSubmit={handleCreate}>
+        <Form.Group>
+          <Form.Label>Title:</Form.Label>
+          <Form.Control
             id="title"
             type="text"
             value={title}
@@ -33,10 +37,8 @@ const CreatePost = ({ createPostRef }) => {
               setTitle(e.target.value);
             }}
           />
-        </div>
-        <div>
-          Author:{" "}
-          <input
+          <Form.Label>Author:</Form.Label>
+          <Form.Control
             id="author"
             type="text"
             value={author}
@@ -45,10 +47,8 @@ const CreatePost = ({ createPostRef }) => {
               setAuthor(e.target.value);
             }}
           />
-        </div>
-        <div>
-          url:{" "}
-          <input
+          <Form.Label>url:</Form.Label>
+          <Form.Control
             id="url"
             type="text"
             value={url}
@@ -57,9 +57,11 @@ const CreatePost = ({ createPostRef }) => {
               setUrl(e.target.value);
             }}
           />
-        </div>
-        <button type="submit">create</button>
-      </form>
+          <Button variant="primary" type="submit">
+            create
+          </Button>
+        </Form.Group>
+      </Form>
     </>
   );
 };

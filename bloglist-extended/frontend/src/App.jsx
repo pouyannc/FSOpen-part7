@@ -11,6 +11,7 @@ import Users from "./views/Users";
 import User from "./views/User";
 import Blogs from "./views/Blogs";
 import { initUserData } from "./reducers/userDataReducer";
+import { Button } from "react-bootstrap";
 
 const App = () => {
   const notif = useSelector(({ notif }) => notif);
@@ -42,7 +43,7 @@ const App = () => {
   }, []);
 
   return (
-    <>
+    <div className="container">
       {notif.show && <Alert text={notif.message} />}
 
       {!user ? (
@@ -54,9 +55,9 @@ const App = () => {
             <Link to="/users">users </Link>
             {"logged in as "}
             {`${user.username} `}
-            <button type="button" onClick={handleLogout}>
+            <Button type="button" onClick={handleLogout}>
               logout
-            </button>
+            </Button>
           </div>
           <Routes>
             <Route path="/" element={<Blogs blogs={blogs} />} />
@@ -69,7 +70,7 @@ const App = () => {
           </Routes>
         </div>
       )}
-    </>
+    </div>
   );
 };
 

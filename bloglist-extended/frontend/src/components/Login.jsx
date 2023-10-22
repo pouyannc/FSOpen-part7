@@ -1,7 +1,7 @@
 import React from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { changePassword, changeUsername, login } from "../reducers/userReducer";
-
+import { Form, Button } from "react-bootstrap";
 
 const Login = () => {
   const dispatch = useDispatch();
@@ -17,10 +17,10 @@ const Login = () => {
     <>
       <h2>Login</h2>
 
-      <form onSubmit={handleSubmit}>
-        <div>
-          Username:
-          <input
+      <Form onSubmit={handleSubmit}>
+        <Form.Group>
+          <Form.Label>Username:</Form.Label>
+          <Form.Control
             id="username"
             type="text"
             name="username"
@@ -28,10 +28,8 @@ const Login = () => {
               dispatch(changeUsername(e.target.value));
             }}
           />
-        </div>
-        <div>
-          Password:
-          <input
+          <Form.Label>Password:</Form.Label>
+          <Form.Control
             id="password"
             type="password"
             name="password"
@@ -39,11 +37,11 @@ const Login = () => {
               dispatch(changePassword(e.target.value));
             }}
           />
-        </div>
-        <button id="login-btn" type="submit">
-          login
-        </button>
-      </form>
+          <Button id="login-btn" type="submit">
+            login
+          </Button>
+        </Form.Group>
+      </Form>
     </>
   );
 };
